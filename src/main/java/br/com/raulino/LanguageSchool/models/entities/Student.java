@@ -5,9 +5,10 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.*;
 
-@Entity @NoArgsConstructor
+@Entity @Getter @Setter @RequiredArgsConstructor
 public final class Student extends SchoolUser {
 
+    private String something;
     @ManyToOne()
     @JoinColumn(name = "classroom_id")
     private Classroom classroom;

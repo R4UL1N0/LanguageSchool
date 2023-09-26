@@ -2,7 +2,11 @@ package br.com.raulino.LanguageSchool.controllers;
 
 import br.com.raulino.LanguageSchool.models.dtos.StudentDTO;
 import br.com.raulino.LanguageSchool.services.StudentService;
+
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/school")
@@ -15,30 +19,27 @@ public class StudentController {
     }
 
     @GetMapping("/students")
-    public void getAllStudents() {
-
+    public ResponseEntity<List<StudentDTO>> getAllStudents() {
+        return ResponseEntity.ok(studentService.findAllStudents());
     }
     @GetMapping("/students/{id}")
-    public void getStudentById(@PathVariable String id) {
-
+    public ResponseEntity<StudentDTO> getStudentById(@PathVariable Long id) {
+        return ResponseEntity.ok(studentService.findStudentById(id));
     }
 
     @PostMapping("/students")
-    public void createStudent(@RequestBody StudentDTO studentDTO) {
-
+    public ResponseEntity<StudentDTO> createStudent(@RequestBody StudentDTO studentDTO) {
+        return ResponseEntity.ok(studentService.createStudent(studentDTO));
     }
 
     @PutMapping("students/{id}")
-    public void updateStudent(@PathVariable String id) {
-
+    public void updateStudent(@PathVariable Long id, @RequestBody StudentDTO sDTO) {
+        studentService.updateStudent(sDTO);
     }
 
     @DeleteMapping("students/{id}")
-    public void deleteStudent(@PathVariable String id) {
-
+    public ResponseEntity<StudentDTO> deleteStudent(@PathVariable Long id) {
+        return ResponseEntity.ok(studentService.deleteStudent(id));
     }
-
-
-
 
 }

@@ -19,9 +19,7 @@ public class StudentService {
 
     public List<StudentDTO> findAllStudents() {
 
-        return studentRepository.findAll().stream().map((student) -> {
-            return new StudentDTO();
-        }).toList();
+        return studentRepository.findAll().stream().map(Converter::studentEntityToStudentDTO).toList();
 
     }
 
@@ -29,11 +27,29 @@ public class StudentService {
 
         Student student = studentRepository.findById(id).orElseThrow();
 
-        return new StudentDTO();
+        StudentDTO sDTO = Converter.studentEntityToStudentDTO(student);
+
+        return sDTO;
     }
 
-    public void saveStudent(StudentDTO studentDTO) {
+    public StudentDTO createStudent(StudentDTO studentDTO) {
         Student student = Converter.studentDTOtoStudentEntity(studentDTO);
+        System.out.printf("From studentService: %s", student.getAddress().getCountry());
+        Student s = studentRepository.save(student);
 
+        return Converter.studentEntityToStudentDTO(s);
+
+    }
+
+    public void updateStudent(StudentDTO sDTO) {
+
+    }
+
+    public StudentDTO deleteStudent(Long id) {
+        Student s = studentRepository.findById(id).orElseThrow();
+
+        studentRepository.delete(s);
+
+        return Converter.studentEntityToStudentDTO(s);
     }
 }
