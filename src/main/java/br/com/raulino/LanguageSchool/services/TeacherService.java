@@ -1,11 +1,13 @@
 package br.com.raulino.LanguageSchool.services;
 
 import br.com.raulino.LanguageSchool.models.Converter;
+import br.com.raulino.LanguageSchool.models.UpdateEntity;
 import br.com.raulino.LanguageSchool.models.dtos.TeacherDTO;
 import br.com.raulino.LanguageSchool.models.entities.Teacher;
 import br.com.raulino.LanguageSchool.repositories.TeacherRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -31,12 +33,21 @@ public class TeacherService {
     }
 
     public TeacherDTO createTeacher(TeacherDTO tDTO) {
-        Teacher teacher = teacherRepository.save(Converter.teacherDTOtoTeacherEntity(tDTO));
+        Teacher teacher = Converter.teacherDTOtoTeacherEntity(tDTO);
+        teacher.setCreatedAt(LocalDateTime.now());
+        var t = teacherRepository.save(teacher);
 
-        return Converter.teacherEntityToTeacherDTO(teacher);
+        return Converter.teacherEntityToTeacherDTO(t);
     }
 
-    public void updateTeacher(TeacherDTO tDTO) {
+    public TeacherDTO updateTeacher(Long id, TeacherDTO tDTO) throws Exception {
+        if (tDTO.getId() != null && tDTO.getId() != id) throw new Exception("Ids supplied don't match.");
+
+        var oldTeacher = teacherRepository.findById(id).orElseThrow();
+
+        var updatedTeacher = teacherRepository.save(UpdateEntity.teacher(oldTeacher, tDTO));
+
+        return Converter.teacherEntityToTeacherDTO(updatedTeacher);
 
     }
 

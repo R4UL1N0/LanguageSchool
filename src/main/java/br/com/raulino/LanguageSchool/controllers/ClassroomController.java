@@ -41,8 +41,8 @@ public class ClassroomController {
     }
 
     @PutMapping("/classrooms/{id}")
-    public void updateClassroom() {
-        
+    public ResponseEntity<ClassroomDTO> updateClassroom(@PathVariable Long id, @RequestBody ClassroomDTO cDTO) throws Exception {
+        return ResponseEntity.ok(classroomService.updateClassroom(id, cDTO));
     }
 
     @DeleteMapping("/classrooms/{id}")

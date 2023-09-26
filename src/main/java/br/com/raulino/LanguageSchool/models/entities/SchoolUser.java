@@ -31,7 +31,7 @@ sealed public class SchoolUser permits Student, Teacher {
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
     @Column(name = "updated_at", nullable = true)
-    private Date updatedAt;
+    private LocalDateTime updatedAt;
 
 
 }

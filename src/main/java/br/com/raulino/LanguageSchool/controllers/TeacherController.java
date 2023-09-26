@@ -43,8 +43,8 @@ public class TeacherController {
     }
 
     @PutMapping("/teachers/{id}")
-    public void updateTeacher(@PathVariable Long id, @RequestBody TeacherDTO tDTO) {
-        teacherService.updateTeacher(tDTO);
+    public ResponseEntity<TeacherDTO> updateTeacher(@PathVariable Long id, @RequestBody TeacherDTO tDTO) throws Exception {
+        return ResponseEntity.ok(teacherService.updateTeacher(id, tDTO));
     }
 
     @DeleteMapping("/teachers/{id}")

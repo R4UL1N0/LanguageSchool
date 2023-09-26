@@ -1,12 +1,14 @@
 package br.com.raulino.LanguageSchool.services;
 
 import br.com.raulino.LanguageSchool.models.Converter;
+import br.com.raulino.LanguageSchool.models.UpdateEntity;
 import br.com.raulino.LanguageSchool.models.dtos.ClassroomDTO;
 import br.com.raulino.LanguageSchool.models.entities.Classroom;
 import br.com.raulino.LanguageSchool.repositories.ClassroomRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -30,13 +32,21 @@ public class ClassroomService {
     }
 
     public ClassroomDTO createClassroom(ClassroomDTO cDTO) {
-
-        Classroom c = classroomRepository.save(Converter.classroomDTOtoClassroomEntity(cDTO));
-        return Converter.classroomEntityToClassroomDTO(c);
+        Classroom c = Converter.classroomDTOtoClassroomEntity(cDTO);
+        c.setCreatedAt(LocalDateTime.now());
+        var classroom = classroomRepository.save(c);
+        return Converter.classroomEntityToClassroomDTO(classroom);
 
     }
 
-    public void updateClassroom(ClassroomDTO cDTO) {
+    public ClassroomDTO updateClassroom(Long id, ClassroomDTO cDTO) throws Exception {
+        if (cDTO.getId() != null && id != cDTO.getId()) throw new Exception("Ids supplied don't match.");
+
+        Classroom c = classroomRepository.findById(id).orElseThrow();
+
+        var updatedClassroom = classroomRepository.save(UpdateEntity.classroom(c, cDTO));
+
+        return Converter.classroomEntityToClassroomDTO(updatedClassroom);
 
     }
 

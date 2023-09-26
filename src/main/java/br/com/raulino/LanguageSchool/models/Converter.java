@@ -13,55 +13,78 @@ import br.com.raulino.LanguageSchool.models.entities.Teacher;
 
 public class Converter {
     static public Student studentDTOtoStudentEntity(StudentDTO sDTO) {
-        System.out.printf("From Converter: %s", sDTO.getStreet());
-        Student st = new Student();
-        st.setName(sDTO.getName());
-        st.setLastName(sDTO.getLastName());
-        st.setAddress(new Address(sDTO.getStreet(), sDTO.getCity(), sDTO.getCountry(), sDTO.getZipcode()));
-        st.setBirthday(new Date(sDTO.getBirthday().getTime()));
-        st.setActive(false);
-        st.setCreatedAt(LocalDateTime.now());
+        Student sEntity = new Student();
+        sEntity.setName(sDTO.getName());
+        sEntity.setLastName(sDTO.getLastName());
+        sEntity.setAddress(new Address(sDTO.getStreet(), sDTO.getCity(), sDTO.getCountry(), sDTO.getZipcode()));
+        sEntity.setBirthday(new Date(sDTO.getBirthday().getTime()));
+        sEntity.setActive(false);
 
-
-        return st;
+        return sEntity;
     }
 
-    static public StudentDTO studentEntityToStudentDTO(Student s) {
+    static public StudentDTO studentEntityToStudentDTO(Student sEntity) {
         StudentDTO sDTO = new StudentDTO();
-        sDTO.setId(s.getId());
-        sDTO.setName(s.getName());
-        sDTO.setLastName(s.getLastName());
-        sDTO.setActive(s.getActive());
-        sDTO.setStreet(s.getAddress().getStreet());
-        sDTO.setCity(s.getAddress().getCity());
-        sDTO.setCountry(s.getAddress().getCountry());
-        sDTO.setZipcode(s.getAddress().getZipCode());
-        sDTO.setBirthday(s.getBirthday());
+        sDTO.setId(sEntity.getId());
+        sDTO.setName(sEntity.getName());
+        sDTO.setLastName(sEntity.getLastName());
+        sDTO.setActive(sEntity.getActive());
+        sDTO.setStreet(sEntity.getAddress().getStreet());
+        sDTO.setCity(sEntity.getAddress().getCity());
+        sDTO.setCountry(sEntity.getAddress().getCountry());
+        sDTO.setZipcode(sEntity.getAddress().getZipCode());
+        sDTO.setBirthday(sEntity.getBirthday());
         
 
         return sDTO;
     }
 
     static public Teacher teacherDTOtoTeacherEntity(TeacherDTO tDTO) {
-        Teacher t = new Teacher();
+        Teacher tEntity = new Teacher();
+        tEntity.setName(tDTO.getName());
+        tEntity.setLastName(tDTO.getLastName());
+        tEntity.setAddress(new Address(tDTO.getStreet(), tDTO.getCity(), tDTO.getCountry(), tDTO.getZipcode()));
+        tEntity.setBirthday(new Date(tDTO.getBirthday().getTime()));
+        tEntity.setActive(false);
 
-        return t;
+        return tEntity;
     }
 
-    static public TeacherDTO teacherEntityToTeacherDTO(Teacher t) {
+    static public TeacherDTO teacherEntityToTeacherDTO(Teacher tEntity) {
         TeacherDTO tDTO = new TeacherDTO();
+        tDTO.setId(tEntity.getId());
+        tDTO.setName(tEntity.getName());
+        tDTO.setLastName(tEntity.getLastName());
+        tDTO.setActive(tEntity.getActive());
+        tDTO.setStreet(tEntity.getAddress().getStreet());
+        tDTO.setCity(tEntity.getAddress().getCity());
+        tDTO.setCountry(tEntity.getAddress().getCountry());
+        tDTO.setZipcode(tEntity.getAddress().getZipCode());
+        tDTO.setBirthday(tEntity.getBirthday());
+        
 
         return tDTO;
     }
 
     static public Classroom classroomDTOtoClassroomEntity(ClassroomDTO cDTO) {
-        Classroom classroom = new Classroom();
+        Classroom cEntity = new Classroom();
+        cEntity.setClassCode(cDTO.getClassCode());
+        cEntity.setStartDate(cDTO.getStartDate());
+        cEntity.setEndDate(cDTO.getEndDate());
+        cEntity.setLanguage(cDTO.getLanguageType());
+        cEntity.setLevel(cDTO.getLanguageLevel());
 
-        return classroom;
+        return cEntity;
     }
 
-    static public ClassroomDTO classroomEntityToClassroomDTO(Classroom c) {
+    static public ClassroomDTO classroomEntityToClassroomDTO(Classroom cEntity) {
         ClassroomDTO cDTO = new ClassroomDTO();
+        cDTO.setId(cEntity.getId());
+        cDTO.setClassCode(cEntity.getClassCode());
+        cDTO.setStartDate(cEntity.getStartDate());
+        cDTO.setEndDate(cEntity.getEndDate());
+        cDTO.setLanguageType(cEntity.getLanguage());
+        cDTO.setLanguageLevel(cEntity.getLevel());
 
         return cDTO;
     }

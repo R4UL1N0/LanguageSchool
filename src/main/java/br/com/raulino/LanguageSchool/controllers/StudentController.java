@@ -33,8 +33,8 @@ public class StudentController {
     }
 
     @PutMapping("students/{id}")
-    public void updateStudent(@PathVariable Long id, @RequestBody StudentDTO sDTO) {
-        studentService.updateStudent(sDTO);
+    public ResponseEntity<StudentDTO> updateStudent(@PathVariable Long id, @RequestBody StudentDTO sDTO) throws Exception {
+        return ResponseEntity.ok(studentService.updateStudent(id, sDTO));
     }
 
     @DeleteMapping("students/{id}")
