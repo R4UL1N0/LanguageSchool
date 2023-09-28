@@ -1,7 +1,5 @@
 package br.com.raulino.LanguageSchool.models;
 import java.sql.Date;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 import br.com.raulino.LanguageSchool.models.dtos.ClassroomDTO;
 import br.com.raulino.LanguageSchool.models.dtos.StudentDTO;
@@ -34,6 +32,7 @@ public class Converter {
         sDTO.setCountry(sEntity.getAddress().getCountry());
         sDTO.setZipcode(sEntity.getAddress().getZipCode());
         sDTO.setBirthday(sEntity.getBirthday());
+        sDTO.setClassroomId(sEntity.getClassroom().getId());
         
 
         return sDTO;
@@ -85,6 +84,8 @@ public class Converter {
         cDTO.setEndDate(cEntity.getEndDate());
         cDTO.setLanguageType(cEntity.getLanguage());
         cDTO.setLanguageLevel(cEntity.getLevel());
+        if (cEntity.getTeacher() != null) cDTO.setTeacherId(cEntity.getTeacher().getId());
+        
 
         return cDTO;
     }

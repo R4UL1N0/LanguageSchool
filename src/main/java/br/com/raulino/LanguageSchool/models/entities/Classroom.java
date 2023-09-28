@@ -23,8 +23,10 @@ public class Classroom {
     @Column(name = "end_date")
     private LocalDate endDate;
     @Enumerated(EnumType.STRING)
+    @Column(name = "class_level")
     private LanguageLevel level;
     @Enumerated(EnumType.STRING)
+    @Column(name = "class_lang")
     private LanguageType language;
     @ManyToOne()
     @JoinColumn(name = "teacher_id")

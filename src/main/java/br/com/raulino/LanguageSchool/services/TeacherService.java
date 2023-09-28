@@ -5,6 +5,7 @@ import br.com.raulino.LanguageSchool.models.UpdateEntity;
 import br.com.raulino.LanguageSchool.models.dtos.TeacherDTO;
 import br.com.raulino.LanguageSchool.models.entities.Teacher;
 import br.com.raulino.LanguageSchool.repositories.TeacherRepository;
+
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -19,10 +20,12 @@ public class TeacherService {
         this.teacherRepository = teacherRepository;
     }
 
+    public Boolean doesTeacherExist(Long id) {
+        return teacherRepository.existsById(id);
+    }
+
     public List<TeacherDTO> findAllTeachers() {
         List<Teacher> teachers = teacherRepository.findAll();
-
-        // if (teachers.isEmpty()) return List.of();
 
         return teachers.stream().map(Converter::teacherEntityToTeacherDTO).toList();
     }

@@ -12,16 +12,22 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.raulino.LanguageSchool.models.dtos.ClassroomDTO;
 import br.com.raulino.LanguageSchool.models.dtos.TeacherDTO;
+import br.com.raulino.LanguageSchool.services.ClassroomService;
 import br.com.raulino.LanguageSchool.services.TeacherService;
 
 @RestController
 @RequestMapping("/api/school")
 public class TeacherController {
 
+    private ClassroomService classroomService;
+
     private TeacherService teacherService;
 
-    public TeacherController(TeacherService teacherService) {
+
+    public TeacherController(ClassroomService classroomService, TeacherService teacherService) {
+        this.classroomService = classroomService;
         this.teacherService = teacherService;
     }
 
@@ -50,5 +56,11 @@ public class TeacherController {
     @DeleteMapping("/teachers/{id}")
     public ResponseEntity<TeacherDTO> deleteTeacher(@PathVariable Long id) {
         return ResponseEntity.ok(teacherService.deleteTeacher(id));
+    }
+
+    @GetMapping("teachers/{id}/classrooms") 
+    public ResponseEntity<List<ClassroomDTO>> findClassroomsByTeacher(@PathVariable Long id) throws Exception {
+        if (!teacherService.doesTeacherExist(id)) return ResponseEntity.badRequest().build();
+        return ResponseEntity.ok(classroomService.findAllClassroomsByTeacherId(id));
     }
 }

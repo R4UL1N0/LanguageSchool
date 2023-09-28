@@ -4,29 +4,39 @@ import br.com.raulino.LanguageSchool.models.Converter;
 import br.com.raulino.LanguageSchool.models.UpdateEntity;
 import br.com.raulino.LanguageSchool.models.dtos.StudentDTO;
 import br.com.raulino.LanguageSchool.models.entities.Student;
+import br.com.raulino.LanguageSchool.repositories.ClassroomRepository;
 import br.com.raulino.LanguageSchool.repositories.StudentRepository;
 import jakarta.persistence.EntityNotFoundException;
 
 import org.springframework.stereotype.Service;
 
-import java.sql.Date;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
 public class StudentService {
 
-    private final StudentRepository studentRepository;
 
-    public StudentService(StudentRepository studentRepository) {
+    private final StudentRepository studentRepository;
+    private final ClassroomRepository classroomRepository;
+
+    
+
+
+    public StudentService(StudentRepository studentRepository, ClassroomRepository classroomRepository) {
         this.studentRepository = studentRepository;
+        this.classroomRepository = classroomRepository;
     }
 
     public List<StudentDTO> findAllStudents() {
 
         return studentRepository.findAll().stream().map(Converter::studentEntityToStudentDTO).toList();
 
+    }
+
+    public List<StudentDTO> findStudentsByClassroomId(Long classId) {
+        var classStudents = studentRepository.findAll().stream().filter(s -> s.getClassroom().getId() == classId).toList();
+        return classStudents.stream().map((s) -> Converter.studentEntityToStudentDTO(s)).toList();
     }
 
     public StudentDTO findStudentById(Long id) {
@@ -38,10 +48,16 @@ public class StudentService {
         return sDTO;
     }
 
-    public StudentDTO createStudent(StudentDTO studentDTO) {
-        Student student = Converter.studentDTOtoStudentEntity(studentDTO);
+    public StudentDTO createStudent(StudentDTO sDTO) throws Exception {
+        Student student = Converter.studentDTOtoStudentEntity(sDTO);
         student.setCreatedAt(LocalDateTime.now());
+
+        if (sDTO.getClassroomId() != null && !classroomRepository.existsById(sDTO.getClassroomId())) throw new Exception("Classroom doesn't exist.");
+        student.setClassroom(classroomRepository.findById(sDTO.getClassroomId()).get());
+
         Student s = studentRepository.save(student);
+        
+        
 
         return Converter.studentEntityToStudentDTO(s);
 

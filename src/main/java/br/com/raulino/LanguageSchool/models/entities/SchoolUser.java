@@ -10,10 +10,11 @@ import java.time.LocalDateTime;
 sealed public class SchoolUser permits Student, Teacher {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
-    @Column(name = "name", length = 100, nullable = false)
+    @Column(name = "name", length = 50, nullable = false)
     private String name;
-    @Column(name = "last_name", length = 250, nullable = false)
+    @Column(name = "last_name", length = 100, nullable = false)
     private String lastName;
     @Column(name = "birthday", nullable = false)
     private Date birthday;

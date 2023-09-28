@@ -12,7 +12,7 @@ public class Address {
     private String street;
     @Column(name = "city", length = 100, nullable = true)
     private String city;
-    @Column(name = "street", length = 100, nullable = true)
+    @Column(name = "country", length = 100, nullable = true)
     private String country;
     @Column(name = "zipcode", length = 20, nullable = true)
     private String zipCode;

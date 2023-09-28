@@ -3,7 +3,6 @@ package br.com.raulino.LanguageSchool.models.entities;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 

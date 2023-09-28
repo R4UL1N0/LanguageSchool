@@ -5,7 +5,8 @@ import br.com.raulino.LanguageSchool.models.UpdateEntity;
 import br.com.raulino.LanguageSchool.models.dtos.ClassroomDTO;
 import br.com.raulino.LanguageSchool.models.entities.Classroom;
 import br.com.raulino.LanguageSchool.repositories.ClassroomRepository;
-import lombok.RequiredArgsConstructor;
+import br.com.raulino.LanguageSchool.repositories.TeacherRepository;
+
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -14,15 +15,27 @@ import java.util.List;
 @Service
 public class ClassroomService {
 
+    private final TeacherRepository teacherRepository;
+
     private final ClassroomRepository classroomRepository;
 
-    public ClassroomService(ClassroomRepository classroomRepository) {
+
+    public ClassroomService(TeacherRepository teacherRepository, ClassroomRepository classroomRepository) {
+        this.teacherRepository = teacherRepository;
         this.classroomRepository = classroomRepository;
+    }
+
+    public Boolean doesClassroomExist(Long id) {
+        return classroomRepository.existsById(id);
     }
 
     public List<ClassroomDTO> findAllClassrooms() {
 
         return classroomRepository.findAll().stream().map(Converter::classroomEntityToClassroomDTO).toList();
+    }
+
+    public List<ClassroomDTO> findAllClassroomsByTeacherId(Long teacherId) {
+        return classroomRepository.findClassroomsByTeacherId(teacherId).stream().map((c) -> Converter.classroomEntityToClassroomDTO(c)).toList();
     }
 
     public ClassroomDTO findClassroomById(Long id) {
@@ -31,9 +44,18 @@ public class ClassroomService {
         return Converter.classroomEntityToClassroomDTO(c);
     }
 
-    public ClassroomDTO createClassroom(ClassroomDTO cDTO) {
+    public ClassroomDTO findClassroomByClassCode(String classCode) throws Exception {
+        var c = classroomRepository.findClassroomByClassCode(classCode).orElseThrow(() -> new Exception("No Classroom from classcode received."));
+        return Converter.classroomEntityToClassroomDTO(c);
+    }
+
+    public ClassroomDTO createClassroom(ClassroomDTO cDTO) throws Exception {
+
         Classroom c = Converter.classroomDTOtoClassroomEntity(cDTO);
         c.setCreatedAt(LocalDateTime.now());
+        if (cDTO.getTeacherId() != null && !teacherRepository.existsById(cDTO.getTeacherId())) throw new Exception("Teacher doesn't exist.");
+        c.setTeacher(teacherRepository.findById(cDTO.getTeacherId()).get());
+
         var classroom = classroomRepository.save(c);
         return Converter.classroomEntityToClassroomDTO(classroom);
 
@@ -57,4 +79,5 @@ public class ClassroomService {
 
         return Converter.classroomEntityToClassroomDTO(c);
     }
+
 }
