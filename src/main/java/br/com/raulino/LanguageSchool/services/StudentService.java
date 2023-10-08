@@ -41,7 +41,7 @@ public class StudentService {
 
     public StudentDTO findStudentById(Long id) {
 
-        Student student = studentRepository.findById(id).orElseThrow();
+        Student student = studentRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Student not found"));
 
         StudentDTO sDTO = Converter.studentEntityToStudentDTO(student);
 
@@ -53,18 +53,16 @@ public class StudentService {
         student.setCreatedAt(LocalDateTime.now());
 
         if (sDTO.getClassroomId() != null && !classroomRepository.existsById(sDTO.getClassroomId())) throw new Exception("Classroom doesn't exist.");
-        student.setClassroom(classroomRepository.findById(sDTO.getClassroomId()).get());
+        if (sDTO.getClassroomId() != null) student.setClassroom(classroomRepository.findById(sDTO.getClassroomId()).get());
 
         Student s = studentRepository.save(student);
         
-        
-
         return Converter.studentEntityToStudentDTO(s);
 
     }
 
     public StudentDTO updateStudent(Long id, StudentDTO sDTO) throws Exception {
-        if (sDTO.getId() != null && sDTO.getId() != id) throw new Exception("Ids supplied don't match.");
+        if (sDTO.getId() != null && !sDTO.getId().equals(id)) throw new Exception("Ids supplied don't match.");
 
         Student s = studentRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("User not found."));
         

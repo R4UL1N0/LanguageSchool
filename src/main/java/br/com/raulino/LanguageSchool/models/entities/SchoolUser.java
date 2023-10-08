@@ -1,13 +1,14 @@
 package br.com.raulino.LanguageSchool.models.entities;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.sql.Date;
 import java.time.LocalDateTime;
 @MappedSuperclass
-@Data
-sealed public class SchoolUser permits Student, Teacher {
+@Getter @Setter 
+abstract public class SchoolUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")

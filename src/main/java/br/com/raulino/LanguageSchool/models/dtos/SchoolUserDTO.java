@@ -8,7 +8,7 @@ import lombok.Setter;
 import java.util.Date;
 
 @Getter @Setter @AllArgsConstructor @NoArgsConstructor
-sealed abstract class SchoolUserDTO permits StudentDTO, TeacherDTO {
+abstract class SchoolUserDTO {
     private Long id;
     private String name;
     private String lastName;

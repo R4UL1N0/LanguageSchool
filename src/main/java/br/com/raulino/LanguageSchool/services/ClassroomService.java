@@ -6,6 +6,7 @@ import br.com.raulino.LanguageSchool.models.dtos.ClassroomDTO;
 import br.com.raulino.LanguageSchool.models.entities.Classroom;
 import br.com.raulino.LanguageSchool.repositories.ClassroomRepository;
 import br.com.raulino.LanguageSchool.repositories.TeacherRepository;
+import jakarta.persistence.EntityNotFoundException;
 
 import org.springframework.stereotype.Service;
 
@@ -39,7 +40,7 @@ public class ClassroomService {
     }
 
     public ClassroomDTO findClassroomById(Long id) {
-        Classroom c = classroomRepository.findById(id).orElseThrow();
+        Classroom c = classroomRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Classroom not found"));
 
         return Converter.classroomEntityToClassroomDTO(c);
     }
@@ -53,7 +54,7 @@ public class ClassroomService {
 
         Classroom c = Converter.classroomDTOtoClassroomEntity(cDTO);
         c.setCreatedAt(LocalDateTime.now());
-        if (cDTO.getTeacherId() != null && !teacherRepository.existsById(cDTO.getTeacherId())) throw new Exception("Teacher doesn't exist.");
+        if (cDTO.getTeacherId() != null && !teacherRepository.existsById(cDTO.getTeacherId())) throw new EntityNotFoundException("Teacher doesn't exist.");
         c.setTeacher(teacherRepository.findById(cDTO.getTeacherId()).get());
 
         var classroom = classroomRepository.save(c);

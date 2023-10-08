@@ -1,6 +1,7 @@
 package br.com.raulino.LanguageSchool.exceptions;
 
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -18,7 +19,8 @@ public class ExceptionHandler {
 
     @org.springframework.web.bind.annotation.ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<ExceptionDTO> treat404(EntityNotFoundException e) {
-        return ResponseEntity.notFound().build();
+        ExceptionDTO exceptionDTO = new ExceptionDTO(e.getMessage(), "404");
+        return new ResponseEntity<>(exceptionDTO, HttpStatus.NOT_FOUND);
     }
 
     @org.springframework.web.bind.annotation.ExceptionHandler(Exception.class)

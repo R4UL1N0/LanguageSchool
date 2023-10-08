@@ -5,6 +5,7 @@ import br.com.raulino.LanguageSchool.models.UpdateEntity;
 import br.com.raulino.LanguageSchool.models.dtos.TeacherDTO;
 import br.com.raulino.LanguageSchool.models.entities.Teacher;
 import br.com.raulino.LanguageSchool.repositories.TeacherRepository;
+import jakarta.persistence.EntityNotFoundException;
 
 import org.springframework.stereotype.Service;
 
@@ -29,8 +30,9 @@ public class TeacherService {
 
         return teachers.stream().map(Converter::teacherEntityToTeacherDTO).toList();
     }
+
     public TeacherDTO findTeacherById(Long id) {
-        Teacher t = teacherRepository.findById(id).orElseThrow();
+        Teacher t = teacherRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Teacher not found"));
 
         return Converter.teacherEntityToTeacherDTO(t);
     }
@@ -55,7 +57,7 @@ public class TeacherService {
     }
 
     public TeacherDTO deleteTeacher(Long id) {
-        Teacher t = teacherRepository.findById(id).orElseThrow();
+        Teacher t = teacherRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Id not found"));
         teacherRepository.delete(t);
 
         return Converter.teacherEntityToTeacherDTO(t);

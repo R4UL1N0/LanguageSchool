@@ -32,7 +32,8 @@ public class Converter {
         sDTO.setCountry(sEntity.getAddress().getCountry());
         sDTO.setZipcode(sEntity.getAddress().getZipCode());
         sDTO.setBirthday(sEntity.getBirthday());
-        sDTO.setClassroomId(sEntity.getClassroom().getId());
+        if (sEntity.getClassroom() != null) sDTO.setClassroomId(sEntity.getClassroom().getId());
+        
         
 
         return sDTO;
@@ -67,6 +68,7 @@ public class Converter {
 
     static public Classroom classroomDTOtoClassroomEntity(ClassroomDTO cDTO) {
         Classroom cEntity = new Classroom();
+        if (cDTO.getId() != null) cEntity.setId(cDTO.getId());
         cEntity.setClassCode(cDTO.getClassCode());
         cEntity.setStartDate(cDTO.getStartDate());
         cEntity.setEndDate(cDTO.getEndDate());
