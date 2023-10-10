@@ -1,8 +1,9 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:2345/postgres
+    # url: jdbc:postgresql://host.docker.internal:2345/school_db
+    url: jdbc:postgresql://containers-us-west-193.railway.app:6249/railway
     username: postgres
-    password: postgres
+    password: FL6B8G4LFc1hETcycLqb
     driver-class-name: org.postgresql.Driver
   jpa:
     database: postgresql
