@@ -1,0 +1,6 @@
+spring:
+  datasource:
+    # url: jdbc:postgresql://host.docker.internal:2345/school_db
+    url: jdbc:postgresql://localhost:2345/school_db
+    username: postgres
+    password: postgres
