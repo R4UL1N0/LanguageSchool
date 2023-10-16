@@ -10,7 +10,7 @@ import io.swagger.v3.oas.annotations.servers.Server;
         contact = @Contact(
             name = "Lucas Raulino dos Santos",
             email = "raulino.storage@gmail.com",
-            url = "https://r4ul1n0.github.io/"
+            url = "https://languageschool-production.up.railway.app"
         ),
         description = "OpenAPI Docs for Language School Management System",
         title = "Language School",
